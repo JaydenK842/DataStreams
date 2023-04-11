@@ -1,16 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 
 public class StreamGUI extends JFrame {
-    Vector<String> lines = new Vector<>();
+    Vector<String> lineOfFile = new Vector<>();
     JFrame frame;
 
     JPanel middleSection;
@@ -80,7 +82,7 @@ public class StreamGUI extends JFrame {
         bottomSection.add(load);
 
         compileSearch = new JButton("Search");
-        compileSearch.addActionListener((ActionEvent ae) -> searchResults(searchField, filtered, lines));
+        compileSearch.addActionListener((ActionEvent ae) -> searchResults(searchField, filtered, lineOfFile));
         compileSearch.setFocusable(false);
         compileSearch.setEnabled(false);
         bottomSection.add(compileSearch);
@@ -113,12 +115,12 @@ public class StreamGUI extends JFrame {
                         new BufferedReader(new InputStreamReader(in));
 
                 //Empties text from box
-                original.setText("File Text:\n\n");
+                original.setText(selectedFile.getName() + "'s Text:\n\n");
 
                 //While there is still a line to read
                 while (reader.ready()) {
                     String rec = reader.readLine();
-                    lines.add(rec);
+                    lineOfFile.add(rec);
                     //If a line is too long, it will go out of the box
                     original.append(rec + "\n");
                 }
@@ -134,12 +136,22 @@ public class StreamGUI extends JFrame {
         }
     }
 
-    private void searchResults(JTextField searchField, JTextArea filtered, Vector<String> lines) {
+    private void searchResults(JTextField searchField, JTextArea filtered, Vector<String> lineOfFile) {
         String strSearch = searchField.getText();
 
         filtered.setText("What was found:\n\n");
 
-        for (String line : lines) {
+        /*
+        try (Stream lines = Files.lines(Paths.get("src/test.txt"))) {
+            lines.filter(line -> line.con)
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+         */
+
+
+        for (String line : lineOfFile) {
             if (line.contains(strSearch)) {
                 filtered.append(line + "\n");
             }

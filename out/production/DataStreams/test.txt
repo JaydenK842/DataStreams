@@ -1,0 +1,6 @@
+This is a file with text in it
+There are multiple lines for testing my code
+
+
+Blank lines help as well in the testing procedure
+red, green, blue, orange, purple, pink and teal
